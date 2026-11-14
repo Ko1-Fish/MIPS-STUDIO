@@ -380,7 +380,11 @@
         }
         case "beq": case "bne":
           requireArgs(3);
-          if (op === "beq" ? reg(0) === reg(1) : reg(0) !== reg(1)) branch(args[2]);
+          if (op === "beq" ? reg(0) === imm(1) : reg(0) !== imm(1)) branch(args[2]);
+          break;
+        case "beqz": case "bnez":
+          requireArgs(2);
+          if (op === "beqz" ? reg(0) === 0 : reg(0) !== 0) branch(args[1]);
           break;
         case "bgtz": case "blez": case "bltz": case "bgez":
           requireArgs(2);

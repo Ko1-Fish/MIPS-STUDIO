@@ -76,3 +76,22 @@ done:
   assert.equal(machine.registers[16], 0);
   assert.equal(machine.registers[17], 1);
 });
+
+test("supports immediate comparisons and zero-branch pseudoinstructions", () => {
+  const machine = new MipsMachine(`
+.text
+    li $t0, -1
+    beq $t0, -1, matched
+    li $s0, 1
+matched:
+    beqz $zero, finished
+    li $s1, 1
+finished:
+    bnez $zero, finished
+`);
+
+  machine.run();
+
+  assert.equal(machine.registers[16], 0);
+  assert.equal(machine.registers[17], 0);
+});

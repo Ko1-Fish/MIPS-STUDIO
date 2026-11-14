@@ -1,7 +1,7 @@
 (function () {
   const sample = `# Print a message, then calculate 6 + 7
 .data
-message: .asciiz "Hello, MIPS!\\n"
+message: .asciiz "Hello World!\\n"
 
 .text
 .globl main
@@ -25,11 +25,29 @@ main:
   const fileName = document.getElementById("file-name");
   const output = document.getElementById("output");
   const status = document.getElementById("execution-status");
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeColor = document.querySelector('meta[name="theme-color"]');
   const pcIndicator = document.querySelector("#pc-indicator b");
   let machine = null;
   let currentName = "untitled.asm";
 
   source.value = sample;
+
+  function setTheme(theme) {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = theme;
+    themeToggle.textContent = `${nextTheme === "light" ? "Light" : "Dark"} mode`;
+    themeToggle.setAttribute("aria-label", `Switch to ${nextTheme} mode`);
+    themeToggle.setAttribute("aria-pressed", String(theme === "light"));
+    themeColor.content = theme === "dark" ? "#10151e" : "#f3f5f8";
+  }
+
+  setTheme(localStorage.getItem("mips-studio-theme") === "light" ? "light" : "dark");
+  themeToggle.addEventListener("click", () => {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    localStorage.setItem("mips-studio-theme", theme);
+    setTheme(theme);
+  });
 
   function showError(error) {
     status.textContent = "Error";
@@ -145,9 +163,6 @@ main:
     clearError();
     status.textContent = "Modified";
   });
-  source.addEventListener("keyup", updateCursor);
-  source.addEventListener("click", updateCursor);
-  source.addEventListener("select", updateCursor);
   source.addEventListener("keydown", event => {
     if (event.key === "Tab") {
       event.preventDefault();
@@ -157,12 +172,6 @@ main:
       source.dispatchEvent(new Event("input"));
     }
   });
-
-  function updateCursor() {
-    const before = source.value.slice(0, source.selectionStart);
-    const line = before.split("\n");
-    document.getElementById("cursor-position").textContent = `Ln ${line.length}, Col ${line[line.length - 1].length + 1}`;
-  }
 
   render();
 })();

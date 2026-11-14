@@ -3,18 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111827">
+  <meta name="theme-color" content="#10151e">
   <title>MIPS Studio</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#" aria-label="MIPS Studio home">
-      <span class="brand-mark">M</span>
-      <span>MIPS <strong>Studio</strong><small>Assembly workspace</small></span>
-    </a>
+    <a class="brand" href="#" aria-label="MIPS Studio home">MIPS Studio</a>
     <div class="top-actions">
       <span id="file-name" class="file-name">untitled.asm</span>
+      <button id="theme-toggle" class="button button-muted" type="button" aria-pressed="false">Light mode</button>
       <button id="open-button" class="button button-muted" type="button">Open .asm</button>
       <button id="save-button" class="button button-muted" type="button">Save</button>
       <input id="file-input" type="file" accept=".asm,.s,.txt" hidden>
@@ -23,25 +21,21 @@
 
   <main class="workspace">
     <section class="editor-column" aria-label="Assembly editor">
-      <div class="section-bar">
-        <div><span class="status-dot"></span><span>EDITOR</span></div>
-        <span class="language-tag">MIPS32</span>
+      <div class="toolbar">
+        <div class="control-group">
+          <button id="run-button" class="button button-run" type="button">Run</button>
+          <button id="step-button" class="button button-muted" type="button">Step</button>
+          <button id="reset-button" class="button button-muted" type="button">Reset</button>
+        </div>
+        <div class="run-info">
+          <span id="execution-status">Ready</span>
+          <span id="pc-indicator" class="pc-indicator">PC <b>0</b></span>
+        </div>
       </div>
       <textarea id="source" aria-label="MIPS assembly source" spellcheck="false" autocapitalize="off"></textarea>
-      <div class="editor-footer">
-        <span id="cursor-position">Ln 1, Col 1</span>
-        <span id="execution-status">Ready</span>
-      </div>
     </section>
 
-    <section class="right-column" aria-label="Emulator">
-      <div class="controls">
-        <button id="run-button" class="button button-run" type="button"><span aria-hidden="true">▶</span> Run</button>
-        <button id="step-button" class="button button-muted" type="button">Step</button>
-        <button id="reset-button" class="button button-muted" type="button">Reset</button>
-        <span class="control-spacer"></span>
-        <span id="pc-indicator" class="pc-indicator">PC <b>0</b></span>
-      </div>
+    <aside class="right-column" aria-label="Emulator">
       <div class="panel registers-panel">
         <div class="panel-heading"><h2>Registers</h2><span>DECIMAL / HEX</span></div>
         <div id="registers" class="register-grid"></div>
@@ -54,12 +48,8 @@
         <div class="panel-heading"><h2>Console</h2><button id="clear-output" class="text-button" type="button">Clear</button></div>
         <pre id="output" aria-live="polite"></pre>
       </div>
-    </section>
+    </aside>
   </main>
-  <footer class="app-footer">
-    <span>Run or step through your MIPS assembly program</span>
-    <a href="README.md">Supported instructions &amp; usage</a>
-  </footer>
   <script src="simulator.js"></script>
   <script src="app.js"></script>
 </body>
